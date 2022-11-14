@@ -1,13 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Component } from 'react';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { MyContext } from './src/context';
+import { MainStage } from './src/components/main_stage'
+import { UserStage } from './src/components/user_stage'
+import { MyProvider } from './src/context';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Who pays the bill?</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+class App extends Component {
+  static contextType = MyContext;
+
+  render() {
+    return (
+      <MyProvider>
+        <ScrollView>
+          <View style={styles.container}>
+            {
+              this.context.state.stage === 1 ? 
+                <MainStage />
+                :
+                <UserStage />
+            }
+          </View>
+        </ScrollView>
+      </MyProvider>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -18,3 +35,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default App
